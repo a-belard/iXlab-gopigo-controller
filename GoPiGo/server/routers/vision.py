@@ -1,3 +1,4 @@
+import traceback
 from fastapi import APIRouter, File, UploadFile, Form, HTTPException
 from fastapi.responses import JSONResponse
 from ..services.vision import analyze_image_with_vision, make_autonomous_decision
@@ -13,6 +14,8 @@ async def vision_analyze(image: UploadFile = File(...), prompt: str = Form("Desc
         description = analyze_image_with_vision(image_bytes, prompt)
         return JSONResponse({"success": True, "description": description, "prompt": prompt})
     except Exception as e:
+        print(f"ERROR in /vision/analyze: {str(e)}")
+        print(traceback.format_exc())
         raise HTTPException(status_code=500, detail=f"Error analyzing image: {str(e)}")
 
 @router.post("/autonomous/decide")
@@ -26,4 +29,6 @@ async def autonomous_decide(image: UploadFile = File(...), goal: str = Form(...)
         result = make_autonomous_decision(image_bytes, goal, actions_list)
         return JSONResponse(result)
     except Exception as e:
+        print(f"ERROR in /autonomous/decide: {str(e)}")
+        print(traceback.format_exc())
         raise HTTPException(status_code=500, detail=f"Error making decision: {str(e)}")
