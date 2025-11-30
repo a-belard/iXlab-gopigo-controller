@@ -15,10 +15,16 @@ PROTO_PATH = ROOT_DIR / "deploy.prototxt"
 # GROQ API key (prefer environment variable)
 GROQ_API_KEY = os.getenv("GROQ_API_KEY") or os.getenv("GROQ_KEY")
 
+# Gemini API key
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyASRw-7JjA6A65-oUDvqGIKjwd_wMm6RLo")
+
 # Defaults for models
 CHAT_MODEL = os.getenv("GROQ_CHAT_MODEL", "llama-3.3-70b-versatile")
-VISION_MODEL = os.getenv("GROQ_VISION_MODEL", "llama-3.2-90b-vision-preview")
+VISION_MODEL = os.getenv("GROQ_VISION_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct")
 WHISPER_MODEL = os.getenv("GROQ_WHISPER_MODEL", "whisper-large-v3-turbo")
+
+# Gemini model for robotics vision
+GEMINI_VISION_MODEL = os.getenv("GEMINI_VISION_MODEL", "gemini-robotics-er-1.5-preview")
 
 # Server options
 DEBUG = os.getenv("SERVER_DEBUG", "false").lower() == "true"

@@ -29,3 +29,27 @@ def detect_faces(image: np.ndarray, conf_threshold: float = 0.5) -> np.ndarray:
             (x1, y1, x2, y2) = box.astype("int")
             cv2.rectangle(image, (x1, y1), (x2, y2), (0, 255, 0), 2)
     return image
+
+
+def count_faces(image: np.ndarray, conf_threshold: float = 0.5) -> int:
+    """Count the number of faces detected in an image.
+
+    Args:
+        image: BGR image (np.ndarray)
+        conf_threshold: minimum confidence threshold
+    Returns:
+        number of faces detected
+    """
+    (h, w) = image.shape[:2]
+    blob = cv2.dnn.blobFromImage(cv2.resize(image, (300, 300)), 1.0,
+                                 (300, 300), (104.0, 177.0, 123.0))
+    _net.setInput(blob)
+    detections = _net.forward()
+
+    count = 0
+    for i in range(0, detections.shape[2]):
+        confidence = float(detections[0, 0, i, 2])
+        if confidence >= conf_threshold:
+            count += 1
+    return count
+
